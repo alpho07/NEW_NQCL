@@ -1,0 +1,180 @@
+<script language="Javascript">
+    (function($) {
+        var defaults = {
+            rowSpeed: 300,
+            newRow: null,
+            addTop: true,
+            removeTop: true
+        };
+        var newClasses = "newRow"
+        var options = $.extend(defaults, options);
+        $.fn.addRow = function(options) {
+            opts = $.extend(defaults, options);
+            var $table = $(this);
+            var $tableBody = $("tbody", $table);
+            var t = $(opts.newRow).find("td").wrapInner("<div style='display:none;'/>").parent()
+            if (opts.addTop)
+                t.appendTo($tableBody);
+            else
+                t.prependTo($tableBody);
+            t.attr("class", newClasses).removeAttr("id").show().find("td div").slideDown(options.rowSpeed, function() {
+                $(this).each(function() {
+                    var $set = jQuery(this);
+                    $set.replaceWith($set.contents());
+                }).end()
+            })
+            var id = $('div1').attr('id');
+            $("div1").replaceWith($('<div id="' + id + '"/>').html($('div1').html()));
+
+
+            return false;
+        };
+        $.fn.removeRow = function(options) {
+            opts = $.extend(defaults, options);
+            var $table = $(this);
+            var t
+            if (opts.removeTop)
+                t = $table.find('tbody tr:last')
+            else
+                t = $table.find('tbody tr:first');
+            t.find("td")
+                    .wrapInner("<div style='DISPLAY: block'/>")
+                    .parent().find("td div")
+                    .slideUp(opts.rowSpeed, function() {
+                $(this).parent().parent().remove();
+            });
+            return false;
+        };
+        return this;
+    })(jQuery);
+
+
+
+
+</script>
+
+<style>
+
+    body
+    {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 12px;
+    }
+    .rounded-corner
+    {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 12px;
+        margin: 10px;
+        width: 480px;
+        text-align: left;
+        border-collapse: collapse;
+    }
+    .rounded-corner thead th.rounded-company
+    {
+
+    }
+    .rounded-corner thead th.rounded-q4
+    {
+
+    }
+    .rounded-corner th
+    {
+        padding: 8px;
+        font-weight: normal;
+        font-size: 13px;
+        color: #039;
+        background: #b9c9fe;
+    }
+    .rounded-corner td
+    {
+        padding: 8px;
+        background: #e8edff;
+        border-top: 1px solid #fff;
+        color: #669;
+    }
+    .rounded
+    {
+        border-right: 1px solid #fff;
+    }
+    .rounded-corner tfoot td.rounded-foot-left
+    {
+
+    }
+    .rounded-corner tfoot td.rounded-foot-right
+    {
+
+
+
+    }
+    .rounded-corner tbody tr:hover td
+    {
+        background: #d0dafd;
+    }
+
+
+</style>
+8. Education<br/>
+List all colleges and universities attended with dates of attendance, major, and degree earned.<br/>
+(Add/remove row using buttons below)<br />
+<br/>
+<button type="button" id="addRowDemo3">Add a row</button>
+<button type="button" id="removeRowDemo3">Remove a row</button>
+<table id="Demo3" class="rounded-corner" summary="Anirows Demo 1">
+    <thead>
+        <tr>
+            <th scope="col" class="rounded-company">College/University</th>
+            <th scope="col" class="rounded-q1">Dates Attended</th>
+            <th scope="col" class="rounded-q2">Major</th>
+            <th scope="col" class="rounded-q3">Degree</th>
+            <th scope="col" class="rounded-q3">Date Degree Received</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="rounded-foot-left" style="border-right: 0px solid #fff;"><em><!--This is the footer, notice the plugin skips over it. --></em></td>
+            <td class="rounded-foot-right">&nbsp;</td>
+        </tr>
+    </tfoot>
+    <tbody>
+
+        <tr id = "newRow">
+            <td><textarea name="CollegeUniversity_Name" id="CollegeUniversity_Name"></textarea></td>
+            <td><textarea name="Dates_Attended" id="Dates_Attended"></textarea></td>
+            <td><textarea name="Major" id="Major"></textarea></td>
+            <td><textarea name="Degree" id="Degree"></textarea></td>
+            <td><textarea name="Date_Degree_Received" id="Date_Degree_Received"></textarea></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+
+<p>&nbsp; </p>
+<script language="Javascript">
+    var rowIncrement = 0
+    $(document).ready(function() {
+        $("#addRowDemo3").click(function() {
+            rowIncrement = rowIncrement + 1
+            id = rowIncrement
+            $("#Demo3").addRow({
+                newRow: "<tr><td><textarea name='CollegeUniversity_Name" + id + "' id='CollegeUniversity_Name" + id + "'></textarea></td><td><textarea name='Dates_Attended" + id + "' id='Dates_Attended" + id + "'></textarea></td><td><textarea name='Major" + id + "' id='Major" + id + "'></textarea></td><td><textarea name='Degree" + id + "' id='Degree" + id + "'></textarea></td><td><textarea name='Date_Degree_Received" + id + "' id='Date_Degree_Received" + id + "'></textarea></td></tr> ",
+                addTop: false,
+                removeTop: false
+            });
+            $('#Demo3 tr td:not(:last-child)').addClass("rounded");
+        });
+        $("#removeRowDemo3").click(function() {
+            $("#Demo3").removeRow({});
+        });
+
+        $('#Demo1 tr td:not(:last-child)').addClass("rounded");
+        $('#Demo2 tr td:not(:last-child)').addClass("rounded");
+        $('#Demo3 tr td:not(:last-child)').addClass("rounded");
+    });
+
+
+
+</script> 
